@@ -9,8 +9,6 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model.ui import LinkAccountCard
 from googleapiclient.discovery import build
 from oauth2client.client import AccessTokenCredentials, AccessTokenCredentialsError
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 
 from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
@@ -29,7 +27,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "Welcome to the Alexa Skills Kit!"
+        speech_text = "Welcome to Alexa Skill 1!"
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Hello World", speech_text)).set_should_end_session(
@@ -40,7 +38,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 class SummaryHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return is_request_type("IntentRequest")(handler_input)
+        return is_intent_name("SummaryIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
@@ -53,11 +51,40 @@ class SummaryHandler(AbstractRequestHandler):
         http = credentials.authorize(httplib2.Http())
         service = build('gmail', 'v1', http=http)
 
-        results = service.files().list(pageSize=500, fields="nextPageToken, files(id, name)").execute()
-        items = results.get('files', [])
+        msg_list_params = {
+            'userId': 'me'
+        }
+        messages_api = service.users().messages()
+        messages_list_request = messages_api.list(**msg_list_params)
 
-        handler_input.response_builder.speak("There are {} files in your Google Drive".format(len(items)))
+        total_num_messages = 0
+
+        while messages_list_request is not None:
+            gmail_msg_list = messages_list_request.execute()
+
+            # we build the batch request
+            batch = service.new_batch_http_request(callback=self.print_gmail_message)
+            for gmail_message in gmail_msg_list['messages']:
+                msg_get_params = {
+                    'userId': 'me',
+                    'id': gmail_message['id'],
+                    'format': 'full',
+                }
+                batch.add(service.users().messages().get(**msg_get_params), request_id=gmail_message['id'])
+
+            batch.execute(http=http)
+
+            # pagination handling
+            messages_list_request = messages_api.list_next(messages_list_request, gmail_msg_list)
+
+        handler_input.response_builder.speak("There are messages in your Gmail")
         return handler_input.response_builder.response
+
+    def print_gmail_message(self, request_id, response, exception):
+        if exception is not None:
+            print('messages.get failed for message id {}: {}'.format(request_id, exception))
+        else:
+            print(response)
 
 
 class HelloWorldIntentHandler(AbstractRequestHandler):
@@ -68,11 +95,11 @@ class HelloWorldIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "Hello Python World from Classes!"
+        speech_text = "Hello from the other side!"
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Hello World", speech_text)).set_should_end_session(
-            True)
+            False)
         return handler_input.response_builder.response
 
 

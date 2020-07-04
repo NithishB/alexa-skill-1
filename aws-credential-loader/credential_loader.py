@@ -32,8 +32,7 @@ def getAWSCredentials(awsEmail, awsPassword):
     for tag in span_tags:
         if '[default]' in tag.text:
             text = tag.text
-            driver.quit()
-            return text
+            return driver,text
 
 
 if __name__ == "__main__":
@@ -44,7 +43,7 @@ if __name__ == "__main__":
 
     cnt = 1
     print("Executing {} time".format(cnt))
-    content = getAWSCredentials(awsEmail, awsPassword)
+    driver, content = getAWSCredentials(awsEmail, awsPassword)
     values = [v.strip()+'\n' for v in content.split()]
     file = open("/Users/moudhgn/.aws/credentials", "w")
     file.writelines(values)
@@ -52,6 +51,7 @@ if __name__ == "__main__":
     lastUpdateTime = time.time()
     while True:
         if (time.time() - lastUpdateTime) > repeatDuration:
+            driver.quit()
             cnt += 1
             print("Executing {} time".format(cnt))
             content = getAWSCredentials(awsEmail, awsPassword)
