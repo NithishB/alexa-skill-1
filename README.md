@@ -3,7 +3,7 @@
 ## Instruction to install new pip packages
 
 - enter the **alexa-skill-1** directory
-- run the following pip command - pip install <package-name> -t skill_env
+- run the following pip command - pip install <package-name> -t skill_env Eg: pip3 install numpy -t skill_env
 
 ## Instruction to add new python codes
 * Do not create a directory structure in the alexa-skill-1 folder
