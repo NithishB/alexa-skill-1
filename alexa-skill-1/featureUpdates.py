@@ -1,4 +1,5 @@
 import re
+import datefinder
 
 def candidateStringSearchHelper(body, idx, regexSearchString):
     '''
