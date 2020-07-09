@@ -41,24 +41,22 @@ if __name__ == "__main__":
     repeatDuration = 60*45
     retryTime = 60*15
 
-    cnt = 1
-    print("Executing {} time".format(cnt))
-    driver, content = getAWSCredentials(awsEmail, awsPassword)
-    values = [v.strip()+'\n' for v in content.split()]
-    file = open("/Users/moudhgn/.aws/credentials", "w")
-    file.writelines(values)
-    file.close()
-    lastUpdateTime = time.time()
+    cnt = 0
+    lastUpdateTime = 0
     while True:
         if (time.time() - lastUpdateTime) > repeatDuration:
-            driver.quit()
+            try:
+                driver.quit()
+            except:
+                pass
             cnt += 1
             print("Executing {} time".format(cnt))
-            content = getAWSCredentials(awsEmail, awsPassword)
+            driver, content = getAWSCredentials(awsEmail, awsPassword)
             values = [v.strip() + '\n' for v in content.split()]
             file = open("/Users/moudhgn/.aws/credentials", "w")
             file.writelines(values)
             file.close()
+            print("Done writing")
             lastUpdateTime = time.time()
         else:
             time.sleep(retryTime)
