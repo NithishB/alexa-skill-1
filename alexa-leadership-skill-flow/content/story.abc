@@ -1,0 +1,134 @@
+@start
+	*say
+		Hey Do you want to get started with Amazon's leadership principles.
+	*then
+		// Clear the flag called 'hesitated' in case it was set in a previous play-through.
+		clear hesitated
+		
+        hear yes {
+            -> get ready
+        }
+        hear no {
+            flag hesitated
+            -> hesitate
+        }
+        
+@hesitate
+	*say
+		As an incoming Amazonian, you are expected to adhere to these principles. Do you reconsider and want to learn Amazon's leadership principles?
+	*then
+		hear yes, reconsider {
+            -> get ready
+        }
+        hear no {
+            -> stopme
+        }
+		hear great {
+			-> end
+		}
+
+
+@get ready
+    *say
+        Please tell me your name ?
+    *then
+        slot playerName to 'AMAZON.US_FIRST_NAME'
+        hear {playerName}, my name is {playerName} {
+            -> define module
+        }
+        
+
+@define module
+    *say
+        hi {playerName}
+		We have three modules to start with ?
+		First Module gives you an overview of Amazon leadership principle.
+		Second Module helps you learn by an question answering session.
+		Third Module helps you with work simulation game.
+    *then
+        hear first, overview, intro, give me overview {
+            -> start first module
+        }
+        hear second, question, answering {
+            -> start second module
+        }
+        hear third, game, simulation {
+            -> start third module
+        }
+        
+
+
+
+
+@global append
+    *then
+        // listen everywhere for a few helpful phrases
+        hear list leadership principle, dont know leadership principle {
+            -> list leadership principle
+        }
+        hear start over, restart {
+            // Tell the framework to restart from the beginning
+            >> RESTART
+        }
+        hear repeat {
+            // Tell the framework to repeat everything the player just heard. You can use >> REPROMPT which only plays the reprompt content
+            >> REPEAT
+        }
+        hear help {
+            -> help
+        }
+        hear go back {
+            >> back
+        }
+        // if the player hasn't heard the help message yet and says something the framework didn't catch, play the help message
+        if !helped {
+            hear * {
+                -> help
+            }
+        }
+
+
+@help
+    *say 
+        Where do you need help in ?
+    *then
+        hear list principle {
+            -> list leadership principle
+        }
+
+
+
+@list leadership principle
+    *say
+        All leadership principle are
+            Customer Obsession.
+            Ownership.
+            Invent and Simplify.
+            Are Right, A Lot.
+            Learn and Be Curious.
+            Hire and Develop the Best.
+            Insist on the Highest Standards.
+            Think Big.
+            Bias for Action.
+            Frugality.
+            Earn Trust.
+            Dive Deep.
+            Have Backbone; Disagree and Commit.
+            Deliver Results.
+    *then
+        >> RESTART
+
+
+@stopme
+	*say
+		No Problem, Bye.	
+	*then
+		-> end
+
+@end
+	*say
+		Thanks for playing. Would you like to start over or take a break?
+	*then
+		hear take a break {
+			>> END
+		}

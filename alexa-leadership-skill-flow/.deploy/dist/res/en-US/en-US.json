@@ -1,0 +1,238 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "intents": [
+                {
+                    "name": "flexaIntent",
+                    "samples": [
+                        "customer obsession"
+                    ]
+                },
+                {
+                    "name": "flexbIntent",
+                    "samples": [
+                        "ownership"
+                    ]
+                },
+                {
+                    "name": "flexcIntent",
+                    "samples": [
+                        "invent and simplify"
+                    ]
+                },
+                {
+                    "name": "flexdIntent",
+                    "samples": [
+                        "learn and be curious"
+                    ]
+                },
+                {
+                    "name": "flexeIntent",
+                    "samples": [
+                        "hire and develop the best"
+                    ]
+                },
+                {
+                    "name": "flexfIntent",
+                    "samples": [
+                        "insist on the highest standards"
+                    ]
+                },
+                {
+                    "name": "flexgIntent",
+                    "samples": [
+                        "think big"
+                    ]
+                },
+                {
+                    "name": "flexhIntent",
+                    "samples": [
+                        "bias for action"
+                    ]
+                },
+                {
+                    "name": "flexiIntent",
+                    "samples": [
+                        "frugality"
+                    ]
+                },
+                {
+                    "name": "flexjIntent",
+                    "samples": [
+                        "earn trust"
+                    ]
+                },
+                {
+                    "name": "flexkIntent",
+                    "samples": [
+                        "dive deep"
+                    ]
+                },
+                {
+                    "name": "flexlIntent",
+                    "samples": [
+                        "have backbone; disagree and commit"
+                    ]
+                },
+                {
+                    "name": "flexmIntent",
+                    "samples": [
+                        "deliver results"
+                    ]
+                },
+                {
+                    "name": "flexnIntent",
+                    "samples": [
+                        "are right",
+                        "a lot."
+                    ]
+                },
+                {
+                    "name": "flexoIntent",
+                    "samples": [
+                        "list leadership principle",
+                        "dont know leadership principle"
+                    ]
+                },
+                {
+                    "name": "flexpIntent",
+                    "samples": [
+                        "reconsider"
+                    ]
+                },
+                {
+                    "name": "flexqIntent",
+                    "samples": [
+                        "great"
+                    ]
+                },
+                {
+                    "name": "CatchAllSlotIntent",
+                    "samples": [
+                        "{playerName}",
+                        "my name is {playerName}"
+                    ],
+                    "slots": [
+                        {
+                            "name": "playerName",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        }
+                    ]
+                },
+                {
+                    "name": "flexrIntent",
+                    "samples": [
+                        "first",
+                        "overview",
+                        "intro",
+                        "give me overview"
+                    ]
+                },
+                {
+                    "name": "flexsIntent",
+                    "samples": [
+                        "second",
+                        "question",
+                        "answering"
+                    ]
+                },
+                {
+                    "name": "flextIntent",
+                    "samples": [
+                        "third",
+                        "game",
+                        "simulation"
+                    ]
+                },
+                {
+                    "name": "flexuIntent",
+                    "samples": [
+                        "list principle"
+                    ]
+                },
+                {
+                    "name": "flexvIntent",
+                    "samples": [
+                        "change module"
+                    ]
+                },
+                {
+                    "name": "flexwIntent",
+                    "samples": [
+                        "take a break"
+                    ]
+                },
+                {
+                    "name": "AMAZON.CancelIntent"
+                },
+                {
+                    "name": "AMAZON.HelpIntent"
+                },
+                {
+                    "name": "AMAZON.LoopOffIntent"
+                },
+                {
+                    "name": "AMAZON.LoopOnIntent"
+                },
+                {
+                    "name": "AMAZON.NextIntent"
+                },
+                {
+                    "name": "AMAZON.NoIntent"
+                },
+                {
+                    "name": "AMAZON.PauseIntent"
+                },
+                {
+                    "name": "AMAZON.PreviousIntent"
+                },
+                {
+                    "name": "AMAZON.RepeatIntent"
+                },
+                {
+                    "name": "AMAZON.ResumeIntent"
+                },
+                {
+                    "name": "AMAZON.ShuffleOffIntent"
+                },
+                {
+                    "name": "AMAZON.ShuffleOnIntent"
+                },
+                {
+                    "name": "AMAZON.StartOverIntent"
+                },
+                {
+                    "name": "AMAZON.StopIntent"
+                },
+                {
+                    "name": "AMAZON.YesIntent"
+                },
+                {
+                    "name": "AMAZON.ScrollUpIntent"
+                },
+                {
+                    "name": "AMAZON.ScrollLeftIntent"
+                },
+                {
+                    "name": "AMAZON.ScrollDownIntent"
+                },
+                {
+                    "name": "AMAZON.ScrollRightIntent"
+                },
+                {
+                    "name": "AMAZON.PageUpIntent"
+                },
+                {
+                    "name": "AMAZON.PageDownIntent"
+                },
+                {
+                    "name": "AMAZON.MoreIntent"
+                },
+                {
+                    "name": "AMAZON.FallbackIntent"
+                }
+            ],
+            "invocationName": "alexa hackathon"
+        }
+    }
+}
