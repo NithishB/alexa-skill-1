@@ -1,5 +1,7 @@
 import logging
 import pickle
+import typing
+
 
 import httplib2
 import boto3
@@ -14,15 +16,27 @@ from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
 from ask_sdk_s3.adapter import S3Adapter
 from ask_sdk_core.skill_builder import CustomSkillBuilder
-
+from ask_sdk_core.api_client import DefaultApiClient
+from ask_sdk_model.services.reminder_management import (
+    ReminderRequest, Trigger, TriggerType, AlertInfo, PushNotification,
+    PushNotificationStatus, ReminderResponse, SpokenInfo, SpokenText)
+from ask_sdk_model.services import ServiceException
+from ask_sdk_model.ui import AskForPermissionsConsentCard
 from .gmail_reader import get_summarized_email
 from .featureUpdates import get_mail_end_date
 
 s3_client = boto3.client('s3')
 s3_adapter = S3Adapter(bucket_name="jingle-skill-bucket", path_prefix="", s3_client=s3_client)
 
-sb = CustomSkillBuilder(persistence_adapter=s3_adapter)
+if typing.TYPE_CHECKING:
+    from ask_sdk_core.handler_input import HandlerInput
+    from ask_sdk_model import Response
 
+permissions = ["alexa::alerts:reminders:skill:readwrite"]
+NOTIFY_MISSING_PERMISSIONS = ("Please enable Reminders permissions in "
+                              "the Amazon Alexa app.")
+
+sb = CustomSkillBuilder(persistence_adapter=s3_adapter, api_client=DefaultApiClient())
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -65,11 +79,17 @@ class SummaryHandler(AbstractRequestHandler):
             persistence_attr['first_try'] = False
             handler_input.attributes_manager.save_persistent_attributes()
             return handler_input.response_builder.response
+
         elif access_token is None and not first_try:
             # pickle approach
-            all_mails = pickle.load(open("mails.pkl", "rb"))
-            last_id = all_mails[0]['id']
+            if last_id is None:
+                last_id = 1
+            elif last_id < 3:
+                last_id += 1
+            else:
+                last_id = 3
             first_try = False
+            all_mails = pickle.load(open("mailObjectPickle_"+str(last_id)+".pkl", "rb"))
             for mail in all_mails:
                 date = get_mail_end_date(mail['body'])
                 mail['end_date'] = date
