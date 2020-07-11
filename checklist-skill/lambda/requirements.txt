@@ -1,0 +1,8 @@
+regex
+ask-sdk
+httplib2
+google-api-python-client
+oauth2client
+bs4
+ask-sdk-s3-persistence-adapter
+dateparser
