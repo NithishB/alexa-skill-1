@@ -9,9 +9,7 @@ class Checklist:
         self.rem_days = mail_object['rem_days']
         self.status = "Incomplete"
 
-
-def get_checklist_objects(all_mails):
-    checklist = []
+def get_checklist_objects(all_mails, checklist):
     for mail in all_mails:
         checkItem = Checklist(mail)
         print("EndDate ", mail['end_date'])
