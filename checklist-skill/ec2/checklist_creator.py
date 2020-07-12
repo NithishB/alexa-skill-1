@@ -6,6 +6,7 @@ class Checklist:
         self.id = mail_object['id']
         self.description = mail_object['summary']
         self.end_date = mail_object['end_date']
+        self.rem_days = mail_object['rem_days']
         self.status = "Incomplete"
 
 

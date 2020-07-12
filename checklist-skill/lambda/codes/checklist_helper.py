@@ -1,25 +1,35 @@
 import boto3
 import json
+import pickle
 
 
-def gather_checklist_content():
+def gather_checklist_content(user_id):
     sqs = boto3.client("sqs")
+    s3 = boto3.client("s3")
     checklist_queue = "https://sqs.us-east-1.amazonaws.com/554637451109/checklist-queue"
+    bucket_name = "jingle-skill-bucket"
     response = sqs.receive_message(
         QueueUrl=checklist_queue,
         AttributeNames=['All'],
-        MaxNumberOfMessages=5,
-        WaitTimeSeconds=5
+        MaxNumberOfMessages=1
     )
     if 'Messages' in response:
         message = response['Messages'][0]
         handle = message['ReceiptHandle']
-        checklist = json.loads(message['Body'])
-        sqs.delete_message(
-            QueueUrl=checklist_queue,
-            ReceiptHandle=handle
-        )
-        return checklist
+        message_object = json.loads(message['Body'])
+        if message_object['user_id'] == user_id or message_object['user_id'] == 'tmp':
+            sqs.delete_message(
+                QueueUrl=checklist_queue,
+                ReceiptHandle=handle
+            )
+            s3.download_file(bucket_name, message_object['s3_file'], "/tmp/"+message_object['s3_file'].split("/")[1])
+            s3.delete_object(
+                Bucket=bucket_name,
+                Key=message_object['s3_file']
+            )
+            checklist = pickle.load(open("/tmp/"+message_object['s3_file'].split("/")[1], "rb"))
+
+            return checklist
     else:
         return []
 

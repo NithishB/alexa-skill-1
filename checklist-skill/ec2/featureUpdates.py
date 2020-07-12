@@ -49,19 +49,21 @@ def extractMailDate(mailBody=''):
     '''
     num_dates = []
     matches = datefinder.find_dates(mailBody)
+    deadline = {'date': "", 'days': ""}
 
     for match in matches:
         num_dates.append(match)
 
     # TODO : Make this a bit more robust?
-    if (len(num_dates)):
-        deadline_date = num_dates[-1] # return the last occurrence as of now.
-        # Also get the number of days remaining from today to that deadline.
-        # A negative value of the remaining days means that the deadline has elapsed.
-        num_days_remaining = (deadline_date.date() - date.today()).days
-        return deadline_date, num_days_remaining
+    if len(num_dates):
+        try:
+            deadline['date'] = num_dates[-1].date()  # return the last occurrence as of now.
+            deadline['days'] = (deadline['date'] - date.today()).days
+            return deadline
+        except:
+            return deadline
     else:
-        return None, None
+        return deadline
 
 
 def get_mail_end_date(body):
@@ -80,3 +82,5 @@ def get_mail_end_date(body):
         if (candidateMailLines):
             # The result of this function call will be the deadline dates, if they are present, else None.
             return extractMailDate(candidateMailLines)
+
+    return {'date': "", 'days': ""}

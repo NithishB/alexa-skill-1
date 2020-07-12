@@ -82,13 +82,9 @@ def summarize_body(all_emails):
 
 def end_date_getter(all_emails):
     for mail in all_emails:
-        date, days = get_mail_end_date(mail['body'])
-        if date is not None:
-            mail['end_date'] = str(date)
-            mail['rem_days'] = str(days)
-        else:
-            mail['end_date'] = ""
-            mail['rem_days'] = ""
+        deadline = get_mail_end_date(mail['body'])
+        mail['end_date'] = str(deadline['date'])
+        mail['rem_days'] = str(deadline['days'])
 
     return all_emails
 
@@ -97,6 +93,7 @@ def email_getter(last_seen_id):
     if get_tokens_from_s3():
         for file in os.listdir("tokens"):
             try:
+                user_id = file.split("_")[0]
                 access_token = pickle.load(open(file, "rb"))
                 credentials = AccessTokenCredentials(access_token, 'alexa-skill/1.0')
                 http = credentials.authorize(httplib2.Http())
@@ -105,22 +102,31 @@ def email_getter(last_seen_id):
             except:
                 pass
     else:
+        user_id = "tmp"
         last_seen_id, all_emails = get_pickle_email(last_seen_id)
 
     all_emails = summarize_body(all_emails)
-    print(all_mails)
     all_emails = end_date_getter(all_emails)
 
-    return last_seen_id, all_emails
+    return last_seen_id, all_emails, user_id
 
 
-def write_checklist(checklist):
+def write_checklist(checklist, last_seen_id, user_id):
     if len(checklist) > 0:
         sqs = boto3.client("sqs")
+        s3 = boto3.client('s3')
         checklist_queue = "https://sqs.us-east-1.amazonaws.com/554637451109/checklist-queue"
+        bucket_name = "jingle-skill-bucket"
+
+        filename = user_id + "_"+str(last_seen_id)+".pkl"
+        print(filename)
+        pickle.dump(checklist, open(filename, "wb"))
+        s3.upload_file(filename, bucket_name, user_id+"/"+filename)
+
+        message = {'user_id': user_id, 's3_file': user_id + "/" + filename}
         resp = sqs.send_message(
             QueueUrl=checklist_queue,
-            MessageBody=json.dumps(checklist)
+            MessageBody=json.dumps(message)
         )
 
 
@@ -128,8 +134,8 @@ if __name__ == "__main__":
     last_id = None
     while True:
         print("Getting emails if any")
-        last_id, all_mails = email_getter(last_id)
+        last_id, all_mails, user_id = email_getter(last_id)
         print("Converting to checklist")
         checklist = get_checklist_objects(all_mails)
         print("Writing to queue")
-        write_checklist(checklist)
+        write_checklist(checklist, last_id, user_id)

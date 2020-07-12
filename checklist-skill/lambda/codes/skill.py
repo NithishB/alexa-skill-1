@@ -94,7 +94,8 @@ class CheckListHandler(AbstractRequestHandler):
             checklist = persistence_attr['checklist']
         except:
             checklist = []
-        new_checklist = gather_checklist_content()
+        user_id = persistence_attr['user_id']
+        new_checklist = gather_checklist_content(user_id)
         checklist = checklist + new_checklist
         if len(checklist) > 0:
             speech_text = convert_checklist_to_speech_text(checklist)
