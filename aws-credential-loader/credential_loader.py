@@ -1,4 +1,5 @@
 import warnings
+import os
 warnings.filterwarnings("ignore")
 import time
 from selenium.webdriver import Firefox
@@ -57,6 +58,12 @@ if __name__ == "__main__":
             file.writelines(values)
             file.close()
             print("Done writing")
+            print("Transferring to ec2")
+            ret = os.system("cd ../checklist-skill && bash cred_transfer.sh")
+            if ret >= 0:
+                print("Done")
+            else:
+                print("Failed")
             lastUpdateTime = time.time()
         else:
             time.sleep(retryTime)
