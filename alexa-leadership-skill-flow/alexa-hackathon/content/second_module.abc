@@ -14,7 +14,7 @@
 		    increase contestRating by 1
 		    -> start2QA
         }
-        slot anything to 'LP'
+        slot anything to 'LP1'
         hear {anything}{
             -> start2QA
         }
@@ -30,7 +30,7 @@
 		    increase contestRating by 1
 		    -> start3QA
         }
-        slot anything to 'LP'
+        slot anything to 'LP2'
         hear {anything}{
             -> start3QA
         }
@@ -46,7 +46,7 @@
 		    increase contestRating by 1
 		    -> start4QA
         }
-        slot anything to 'LP'
+        slot anything to 'LP3'
         hear {anything}{
             -> start4QA
         }
@@ -62,7 +62,7 @@
 		    increase contestRating by 1
 		    -> start5QA
         }
-        slot anything to 'LP'
+        slot anything to 'LP4'
         hear {anything}{
             -> start5QA
         }
@@ -78,7 +78,7 @@
 		    increase contestRating by 1
 		    -> answer
         }
-        slot anything to 'LP'
+        slot anything to 'LP5'
         hear {anything}{
             -> answer
         }
