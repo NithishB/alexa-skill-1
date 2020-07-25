@@ -1,0 +1,89 @@
+@start second module
+	*say
+		Lets start with question answering quiz. 
+	*then
+	    set contestRating as 0
+	    -> start1QA
+	    
+@start1QA
+	*say
+		
+		An AWS customer requires that recent unforeseen utilization of AWS services unbeknownst to them, be written off, as they are also not in a position to pay the accrual of resource utilization charges. AWS customer service helped them achieve the same. Which leadership principle were they guided by in this decision?
+	*then
+		hear Customer Obsession {
+		    increase contestRating by 1
+		    -> start2QA
+        }
+        slot anything to 'LP'
+        hear {anything}{
+            -> start2QA
+        }
+        
+        
+	    
+@start2QA
+	*say
+		
+		When making choices or taking decisions, we need to consider and prioritize durability of the solution rather than the ease of solution. Which leadership principle would this line of thought implicate?
+	*then
+		hear Ownership {
+		    increase contestRating by 1
+		    -> start3QA
+        }
+        slot anything to 'LP'
+        hear {anything}{
+            -> start3QA
+        }
+        
+
+	    
+@start3QA
+	*say
+		
+		Mikkel is working on a task wherein he is storing the layout of a customer’s house in an application store. When a customer deletes his/her account, this data is still stored in the application store, and this adds to the requirement in terms of space. What do you think should guide Mikkel to answer the question of whether or not to the delete the information from the store?
+	*then
+		hear Frugality {
+		    increase contestRating by 1
+		    -> start4QA
+        }
+        slot anything to 'LP'
+        hear {anything}{
+            -> start4QA
+        }
+        
+
+	    
+@start4QA
+	*say
+		
+		Bartosz is a new intern in the Alexa core components team. As part of his responsibilities he is supposed to stitch together data from multiple sources. He plans to get the data sequentially, one after the other, for some reason. Which leadership principle would you ask him to refer to, to guide him in this decision?
+	*then
+		hear Bias for action {
+		    increase contestRating by 1
+		    -> start5QA
+        }
+        slot anything to 'LP'
+        hear {anything}{
+            -> start5QA
+        }
+        
+
+	    
+@start5QA
+	*say
+		
+	   Ulrich is a new intern in AWS. He was given a couple of options for projects to choose between. But his manager is forcing him to choose a particular project. He is thinking of just going ahead with the option that his manager chose, because he doesn’t want to argue with him. Which leadership principle should he adhere to in this case?
+	*then
+		hear have backbone, disagree and commit {
+		    increase contestRating by 1
+		    -> answer
+        }
+        slot anything to 'LP'
+        hear {anything}{
+            -> answer
+        }
+        
+
+@answer
+    *say 
+        you answered {contestRating} out of 5 questions correctly

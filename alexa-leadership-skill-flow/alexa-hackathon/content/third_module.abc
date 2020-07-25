@@ -1,0 +1,99 @@
+@ start third module
+    *say
+        Welcome to Amazon's leadership Work Simulation!
+    *then
+    	set contestRating as 0
+        -> work simulation 1
+    
+@work simulation 1
+    *say 
+        You have a deadline to submit a feature in 2 weeks and you are facing a blocker which can delay date of your deliverables. What leaderip do you think you need to demonstrate?
+            Ownership, Frugality, Invent and Simplify.
+    *then
+        hear Ownership {
+            increase contestRating by 1
+            -> correct response
+            }
+        hear Frugality, Invent and Simplify {
+            -> work simulation 1 answer  
+        }
+        
+@work simulation 1 answer
+    *say
+         Incorrect. You are supposed to take ownership of the task and seek for help to resolve this blocker.And update your manager of any possible delay
+        *then
+            -> work simulation 2
+            
+@work simulation 2
+    *say
+        There is an existing service for getting customer order details. But it is not compliant with your usecase and requirements. Will you create a new service according to your usecase or use the existing one adapting it to your requirements? 
+        *then
+            hear existing,create new one{
+                increase contestRating by 1
+                -> work simulation 2 answer
+            }
+            
+@work simulation 2 answer
+    *say
+       Amazon principle of frugality makes sure we try not to reinvent the wheel as much as possible and use the existing service. But before you reach this conclusion you need to apply the principle of Deep Dive to ensure that your requirements are met. Ready for next question?
+       *then
+        hear yes, yeah, ok{
+            -> work simulation 3
+            }
+            hear no {
+            -> total score
+            }
+ 
+@work simulation 3
+    *say
+        There are two candidates A & B to choose from for an SDE I role for your team. A demonstrates sufficient knowledge required for the project requirement of your team while B is extremely coachable with less exposure to the required project skills. Which candidate will you choose and based on what Amazon principle?
+        *then
+            hear Hire and develop the best {
+                -> work simulation 3 answer
+            }
+            
+@work simulation 3 answer
+            *say 
+                Make sure the individual is likely to shine on more than a few leadership principles when you hire. Assess the strengths, with an eye toward demonstrated achievements and potential. Avoids excessive focus on weakness. Ready for the next question?
+            *then
+                increase contestRating by 1
+                hear yeah,ok,yes {
+                -> work simulation 4
+                }
+                hear no {
+                -> total score
+                }
+                
+@work simulation 4
+    *say 
+        Your feature is finally launched and received a very positive response. Your manager and team congratulates you and all are happy. Your manager asks you to change the feature and add something different but you do not like the change. What should be the next steps and what leadership principle should you demonstrate?
+         *then
+            hear Have Backbone, Disagree and Commit.Insist on the Highest Standards {
+            increase contestRating by 1
+                -> work simulation 4 answer
+            }
+      
+@work simulation 4 answer
+    *say
+        First understand the business value the change can bring and how critical it is to business.This situation emphasises more on the principle of Disagree and commit.
+    *then
+        -> total score
+        
+@correct response
+    *say
+        That is correct! Ready for next question?
+        *then
+            hear yes, yeah, ok{
+            increase contestRating by 1
+            -> work simulation 2
+            }
+            hear no {
+            -> total score
+            }
+ 
+@total score
+    *say 
+        You scored {contestRating} out of 4.
+        
+        
+        
